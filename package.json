@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "extracts a string of subpaths from an svg file",
   "main": "index.js",
+  "browser": "browser.js",
   "license": "MIT",
   "author": {
     "name": "Matt DesLauriers",
@@ -15,13 +16,17 @@
     "yargs": "^1.3.2"
   },
   "devDependencies": {
-    "tape": "^3.0.1"
+    "brfs": "^1.2.0",
+    "load-svg": "^1.0.0",
+    "tape": "^3.0.3",
+    "xhr": "^1.17.0"
   },
   "scripts": {
-    "test": "tape tests/simple.js"
+    "test": "tape tests/simple.js",
+    "test-browser": "beefy test/test-browser.js --cwd test --open -- -t brfs"
   },
   "bin": {
-    "extract-svg-path": "./bin/cmd.js"  
+    "extract-svg-path": "./bin/cmd.js"
   },
   "keywords": [
     "svg",

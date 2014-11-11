@@ -18,6 +18,22 @@ Use `-q` or `--quote` to escape the string for JSON:
 extract-svg-path foo.svg --quote > foo.json
 ```
 
+## browser
+
+Currently, only `require('extract-svg-path').extract` works in the browser. This can accept either a string (i.e. from [xhr](https://www.npmjs.org/package/xhr) response) or an SVG node (i.e. from [load-svg](https://github.com/substack/load-svg)).
+
+```js
+var parse = require('parse-svg-path')
+var load = require('load-svg')
+load('svg/infinity.svg', function(err, svg) {
+    var paths = parse(extract(svg))
+})
+```
+
+The next step would be to provide a source transform so that the default `extract()` function can also work in a browser.
+
+## commonjs
+
 You can pipe with [module-exports](https://www.npmjs.org/package/module-exports) to produce CommonJS:
 
 ```
@@ -49,7 +65,6 @@ Extracts the SVG contents of the given file path, using `fs.readFileSync` with u
 #### `extractSvgPath.extract(contents)`
 
 Performs the cheerio extraction on a string.
-
 
 ## License
 
