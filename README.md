@@ -18,34 +18,6 @@ Use `-q` or `--quote` to escape the string for JSON:
 extract-svg-path foo.svg --quote > foo.json
 ```
 
-## browser
-
-Currently, only `require('extract-svg-path').extract` works in the browser. This can accept either a string (i.e. from [xhr](https://www.npmjs.org/package/xhr) response) or an SVG node (i.e. from [load-svg](https://github.com/substack/load-svg)).
-
-```js
-var parse = require('parse-svg-path')
-var load = require('load-svg')
-load('svg/infinity.svg', function(err, svg) {
-    var paths = parse(extract(svg))
-})
-```
-
-The next step would be to provide a source transform so that the default `extract()` function can also work in a browser.
-
-## commonjs
-
-You can pipe with [module-exports](https://www.npmjs.org/package/module-exports) to produce CommonJS:
-
-```
-extract-svg-path foo.svg -q | module-exports > foo.js
-```
-
-Will produce:
-
-```js
-module.exports = "M50,1.42C23.213,1.42,1.........";
-```
-
 ## API
 
 [![NPM](https://nodei.co/npm/extract-svg-path.png)](https://nodei.co/npm/extract-svg-path/)
@@ -65,6 +37,41 @@ Extracts the SVG contents of the given file path, using `fs.readFileSync` with u
 #### `extractSvgPath.extract(contents)`
 
 Performs the cheerio extraction on a string.
+
+
+## Browser API
+
+Only `require('extract-svg-path').extract` will run by default in the browser. This can accept either a string (i.e. from [xhr](https://www.npmjs.org/package/xhr) response) or an SVG node (i.e. from [load-svg](https://github.com/substack/load-svg)).
+
+```js
+var parse = require('parse-svg-path')
+var load = require('load-svg')
+load('svg/infinity.svg', function(err, svg) {
+    var paths = parse(extract(svg))
+})
+```
+
+You can, however, use [extractify-svg-path](https://www.npmjs.org/package/extractify-svg-path), a browserify transform to inline calls to SVG files. Example:
+
+```js
+var parse = require('parse-svg-path')
+var svg = require('extract-svg-path')(__dirname + '/shape.svg')
+var path = parse(svg)
+```
+
+## commonjs
+
+Using the command-line tool, you can pipe [module-exports](https://www.npmjs.org/package/module-exports) to produce a CommonJS file:
+
+```
+extract-svg-path foo.svg -q | module-exports > foo.js
+```
+
+Will produce:
+
+```js
+module.exports = "M50,1.42C23.213,1.42,1.........";
+```
 
 ## License
 
