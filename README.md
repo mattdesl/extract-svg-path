@@ -45,6 +45,7 @@ Only `require('extract-svg-path').extract` will run by default in the browser. T
 
 ```js
 var parse = require('parse-svg-path')
+var extract = require('extract-svg-path').extract
 var load = require('load-svg')
 load('svg/infinity.svg', function(err, svg) {
     var paths = parse(extract(svg))
