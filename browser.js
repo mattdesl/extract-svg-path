@@ -15,7 +15,7 @@ function extract(contents, opt) {
 }
 
 module.exports = function(file, opt) {
-    throw new Error('you need a source transform to inline SVG contents into your bundle')
+    throw new Error('use extractify-svg-path to inline SVG contents into your bundle')
 }
 
 module.exports.extract = extract
