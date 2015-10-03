@@ -1,6 +1,6 @@
 {
   "name": "extract-svg-path",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "extracts a string of subpaths from an svg file",
   "main": "index.js",
   "browser": "browser.js",
