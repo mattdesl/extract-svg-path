@@ -1,10 +1,10 @@
 var cheerio = require('cheerio')
 var fs = require('fs')
-var xtend = require('xtend')
+var assign = require('object-assign')
 
 function extract(contents, opt) {
     opt = opt||{}
-    var $ = cheerio.load(contents, xtend({ xmlMode: true }, opt))
+    var $ = cheerio.load(contents, assign({ xmlMode: true }, opt))
 
     var fullpath = ''
     $('path').each(function() {
@@ -22,4 +22,4 @@ module.exports = function(file, opt) {
     return extract(contents, opt)
 }
 
-module.exports.extract = extract
+module.exports.fromString = extract

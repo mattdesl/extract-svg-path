@@ -1,58 +1,56 @@
 # extract-svg-path
 
-[![unstable](http://badges.github.io/stability-badges/dist/unstable.svg)](http://github.com/badges/stability-badges)
+[![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)
 
-Extracts a string of subpaths from an svg file as a single path. Concats the `<path>` elements' data together to produce the output. This is mostly useful for SVG files of a single monotone shape or glyph (as opposed to, say, SVG font libraries or a complex SVG scene composed of several shapes). 
+Grabs all the `<path>` data from an SVG file, concatenating them into a single string.
 
-```npm install -g extract-svg-path```
+This is mostly useful for simple shapes and silhouettes. It works in Node/Browser and provides a transform for inlining paths into a bundle.
 
-```
-extract-svg-path foo.svg > foo.txt
-```
+## Install
 
-Now you can use the path alongside `parse-svg-path` and similar modules.
-
-Use `-q` or `--quote` to escape the string for JSON:
-
-```
-extract-svg-path foo.svg --quote > foo.json
+```sh
+npm install extract-svg-path [-g|--save]
 ```
 
-## API
-
-[![NPM](https://nodei.co/npm/extract-svg-path.png)](https://nodei.co/npm/extract-svg-path/)
-
-The API is intentionally dumbed down to make it easier for static analysis (i.e. bundler transforms).
-
-```js
-var contents = require('extract-svg-path')(__dirname + '/file.svg')
-```
-
-#### `extractSvgPath(file[, opt])`
-
-Extracts the SVG contents of the given file path, using `fs.readFileSync` with utf8 by default. Any options will be passed along to [cheerio](https://github.com/cheeriojs/cheerio), but with `xmlMode` default to true. Additional options:
-
-- `encoding` the file encoding, defaults to utf8
-
-#### `extractSvgPath.extract(contents)`
-
-Performs the cheerio extraction on a string.
-
-
-## Browser API
-
-Only `require('extract-svg-path').extract` will run by default in the browser. This can accept either a string (i.e. from [xhr](https://www.npmjs.org/package/xhr) response) or an SVG node (i.e. from [load-svg](https://github.com/substack/load-svg)).
+## Example
 
 ```js
 var parse = require('parse-svg-path')
-var extract = require('extract-svg-path').extract
+var extract = require('extract-svg-path')
+
+var path = extract(__dirname + '/infinity.svg')
+var svg = parse(path)
+console.log(svg)
+//=> [ [ 'M', 25, 15 ], ... ]
+```
+
+## Usage
+
+#### `extractSvgPath(file[, opt])`
+
+Extracts the SVG `<path>` contents of the given file path, using `fs.readFileSync` with utf8 by default. Any options will be passed along to [cheerio](https://github.com/cheeriojs/cheerio), but with `xmlMode` default to true. Additional options:
+
+- `encoding` the file encoding, defaults to utf8
+
+#### `extractSvgPath.fromString(contents)`
+
+Extracts the paths from the string contents of an SVG file.
+
+## Browser Usage
+
+Without a transform, only the `fromString` method is supported. This can accept either a string (i.e. from [xhr](https://www.npmjs.org/package/xhr) response) or an SVG node (i.e. from [load-svg](https://github.com/substack/load-svg)).
+
+```js
+var parse = require('parse-svg-path')
+var extract = require('extract-svg-path').fromString
 var load = require('load-svg')
+
 load('svg/infinity.svg', function(err, svg) {
-    var paths = parse(extract(svg))
+  var paths = parse(extract(svg))
 })
 ```
 
-You can, however, use [extractify-svg-path](https://www.npmjs.org/package/extractify-svg-path), a browserify transform to inline calls to SVG files. Example:
+With browserify, you can use the transform to inline files into your bundle. For example:
 
 ```js
 var parse = require('parse-svg-path')
@@ -60,19 +58,17 @@ var svg = require('extract-svg-path')(__dirname + '/shape.svg')
 var path = parse(svg)
 ```
 
-## commonjs
+Then:
 
-Using the command-line tool, you can pipe [module-exports](https://www.npmjs.org/package/module-exports) to produce a CommonJS file:
-
-```
-extract-svg-path foo.svg -q | module-exports > foo.js
+```sh
+browserify index.js -t extract-svg-path/transform
 ```
 
-Will produce:
+## Changes
 
-```js
-module.exports = "M50,1.42C23.213,1.42,1.........";
-```
+- `2.0` - uses `xml-parse-from-string`, removed CLI to reduce dependency bloat, renamed `extract` method to `fromString`, merged transform into this module
+  - a CLI might be re-done later in a separate module
+- `1.0` - includes a CLI, `extract` method
 
 ## License
 
