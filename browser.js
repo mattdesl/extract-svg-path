@@ -20,4 +20,7 @@ module.exports = function () {
   throw new Error('use extract-svg-path/transform to inline SVG contents into your bundle')
 }
 
+module.exports.parse = extractSvgPath
+
+//deprecated
 module.exports.fromString = extractSvgPath

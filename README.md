@@ -32,17 +32,17 @@ Extracts the SVG `<path>` contents of the given file path, using `fs.readFileSyn
 
 - `encoding` the file encoding, defaults to utf8
 
-#### `extractSvgPath.fromString(contents)`
+#### `extractSvgPath.parse(contents)`
 
 Extracts the paths from the string contents of an SVG file.
 
 ## Browser Usage
 
-Without a transform, only the `fromString` method is supported. This can accept either a string (i.e. from [xhr](https://www.npmjs.org/package/xhr) response) or an SVG node (i.e. from [load-svg](https://github.com/substack/load-svg)).
+Without a transform, only the `parse` method is supported. This can accept either a string (i.e. from [xhr](https://www.npmjs.org/package/xhr) response) or an SVG node (i.e. from [load-svg](https://github.com/substack/load-svg)).
 
 ```js
 var parse = require('parse-svg-path')
-var extract = require('extract-svg-path').fromString
+var extract = require('extract-svg-path').parse
 var load = require('load-svg')
 
 load('svg/infinity.svg', function(err, svg) {
@@ -66,6 +66,7 @@ browserify index.js -t extract-svg-path/transform
 
 ## Changes
 
+- `2.1` - renamed `fromString` to `parse` in a backwards-compatible manner
 - `2.0` - uses `xml-parse-from-string`, removed CLI to reduce dependency bloat, renamed `extract` method to `fromString`, merged transform into this module
   - a CLI might be re-done later in a separate module
 - `1.0` - includes a CLI, `extract` method

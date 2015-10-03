@@ -4,20 +4,24 @@ var loadSVG = require('load-svg')
 var path = require('path')
 
 var read = require('../')
-var extract = read.fromString
 var expected = require('fs').readFileSync(path.join(__dirname, '/expected.txt'), 'utf8')
 
 test('should parse XML string', function (t) {
-  t.plan(3)
+  t.plan(4)
 
   load('svg/infinity.svg', function (err, contents) {
     if (err) return t.fail(err)
-    t.equal(extract(contents), expected, 'extracts string contents')
+    t.equal(read.parse(contents), expected, 'extracts string contents')
+  })
+  
+  load('svg/infinity.svg', function (err, contents) {
+    if (err) return t.fail(err)
+    t.equal(read.fromString(contents), expected, 'extracts string contents using deprecated method')
   })
 
   loadSVG('svg/infinity.svg', function (err, svg) {
     if (err) return t.fail(err)
-    t.equal(extract(svg), expected, 'extracts SVG element contents')
+    t.equal(read.parse(svg), expected, 'extracts SVG element contents')
   })
 
   // will throw an error when no transform is added to bundle step

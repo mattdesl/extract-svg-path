@@ -22,4 +22,7 @@ module.exports = function(file, opt) {
     return extract(contents, opt)
 }
 
+module.exports.parse = extract
+
+//deprecated
 module.exports.fromString = extract
