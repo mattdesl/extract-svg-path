@@ -18,9 +18,9 @@ npm install extract-svg-path [-g|--save]
 var parse = require('parse-svg-path')
 var extract = require('extract-svg-path')
 
-var path = extract(__dirname + '/infinity.svg')
-var svg = parse(path)
-console.log(svg)
+var svg = extract(__dirname + '/infinity.svg')
+var path = parse(svg)
+console.log(path)
 //=> [ [ 'M', 25, 15 ], ... ]
 ```
 
